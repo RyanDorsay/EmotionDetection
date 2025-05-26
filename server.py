@@ -1,3 +1,11 @@
+"""
+This module for runs the Emotion Detector on a Flask server.
+
+It sets up a Flask server with an endpoint '/emotionDetector' that
+receives text from the 'textToAnalyze' query parameter, processes it with the
+emotion_detector function, and returns an HTML response with the detected emotions.
+"""
+
 from flask import Flask, request
 from emotion_detection import emotion_detector
 
@@ -5,6 +13,15 @@ app = Flask("Emotion Detector")
 
 @app.route("/emotionDetector")
 def get_emotion():
+    """
+    Analyze given input text for emotions and return the result.
+
+    This endpoint gets the value of the 'textToAnalyze' query parameter, strips any
+    surrounding quotation marks, and passes the cleaned text to the emotion_detector
+    function. If the dominant emotion is None, it responds with an error message;
+    otherwise, it returns an HTML-formatted string with the emotion scores and the
+    dominant emotion.
+    """
 
     text_to_analyse = request.args.get('textToAnalyze')
     # Strip any leading and trailing quotation marks if they exist
