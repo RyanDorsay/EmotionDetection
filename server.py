@@ -14,6 +14,10 @@ def get_emotion():
         text_to_analyse = text_to_analyse[1:-1]
     result = emotion_detector(text_to_analyse)
 
+    # Check if the dominant emotion is None. If so, display an error message.
+    if result.get('dominant_emotion') is None:
+        return "Invalid text! Please try again!"
+
     response_text = (
         f"For the given statement, the system response is 'anger': {result['anger']}, "
         f"'disgust': {result['disgust']}, 'fear': {result['fear']}, "

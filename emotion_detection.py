@@ -10,10 +10,33 @@ def emotion_detector(text_to_analyse):
     # Call emotion predict with the text to analyse
     response = requests.post(url, json=input_json, headers=headers)
 
-    response_text = response.text
+    # Check if the server returns a 400 status code (e.g., for blank entries)
+    if response.status_code == 400:
+        return {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }  
 
     # Parse the json text into a dictionary
-    emotion_dictionary = json.loads(response_text)
+    emotion_dictionary = json.loads(response.text)
+
+    # Extract the list of emotion predictions.
+    predictions = emotion_dictionary.get('emotionPredictions', [])
+
+    # Handle empty predictions
+    if not predictions:
+        return {
+            'anger': 0,
+            'disgust': 0,
+            'fear': 0,
+            'joy': 0,
+            'sadness': 0,
+            'dominant_emotion': None
+        }
 
     # Extract the list of emotion predictions.
     predictions = emotion_dictionary.get('emotionPredictions', [])
